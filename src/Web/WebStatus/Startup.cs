@@ -32,12 +32,13 @@ namespace WebStatus
             services.AddHealthChecksUI(setupSettings: setup =>
              {
                  setup.AddWebhookNotification("Slack", 
-                 uri: "https://hooks.slack.com/services/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", 
+                 uri: Configuration.GetSection("Slack_Uri").Value, 
                  payload: "{\"text\":\"The HealthCheck [[LIVENESS]] is failing with the error message [[FAILURE]]. <http://yourappstatus|Click here> to get more details.\",\"channel\":\"#healthchecks\",\"link_names\": 1,\"username\":\"monkey-bot\",\"icon_emoji\":\":monkey_face:\"}",
                  restorePayload:"{\"text\":\"The HealthCheck [[LIVENESS]] is recovered. All is up and running\",\"channel\":\"#healthchecks\",\"link_names\": 1,\"username\":\"monkey-bot\",\"icon_emoji\":\":monkey_face\" }");
              });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
