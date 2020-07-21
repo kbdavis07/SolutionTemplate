@@ -3,21 +3,27 @@ version: '3.4'
 services:
 
   seq:
+    container_name:seq-log
     image: datalust/seq:latest
 
   sqldata:
+    container_name:ms-sql-db
     image: mcr.microsoft.com/mssql/server:2017-latest 
 
   nosqldata:
+    container_name:mongo-db
     image: mongo
 
   basketdata:
+    container_name:basket-redis
     image: redis:alpine
 
   rabbitmq:
+    container_name: rabbitmq
     image: rabbitmq:3-management-alpine
 
   identity-api:
+    container_name:identity-api
     image: ${REGISTRY:-eshop}/identity.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -26,6 +32,7 @@ services:
       - sqldata
 
   basket-api:
+   container_name:basket-api
     image: ${REGISTRY:-eshop}/basket.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -36,6 +43,7 @@ services:
       - rabbitmq
 
   catalog-api:
+    container_name:catalog-api
     image: ${REGISTRY:-eshop}/catalog.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -45,6 +53,7 @@ services:
       - rabbitmq
 
   ordering-api:
+    container_name: ordering-api
     image: ${REGISTRY:-eshop}/ordering.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -54,6 +63,7 @@ services:
       - rabbitmq
 
   ordering-backgroundtasks:
+    container_name:ordering-backgroundtasks
     image: ${REGISTRY:-eshop}/ordering.backgroundtasks:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -63,6 +73,7 @@ services:
       - rabbitmq
 
   marketing-api:
+    container_name:marketing-api
     image: ${REGISTRY:-eshop}/marketing.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -74,6 +85,7 @@ services:
       - rabbitmq
 
   payment-api:
+    container_name:payment-api
     image: ${REGISTRY:-eshop}/payment.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -82,6 +94,7 @@ services:
       - rabbitmq
 
   locations-api:
+    container_name:locations-api
     image: ${REGISTRY:-eshop}/locations.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -91,6 +104,7 @@ services:
       - rabbitmq
 
   webhooks-api:
+    container_name:webhooks-api
     image: ${REGISTRY:-eshop}/webhooks.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -99,12 +113,15 @@ services:
       - sqldata
 
   mobileshoppingapigw:
+    container_name:mobile-shopping-api-gateway
     image: envoyproxy/envoy:v1.11.1
 
   mobilemarketingapigw:
+    container_name:mobile-marketing-api-gateway
     image: envoyproxy/envoy:v1.11.1
 
   mobileshoppingagg:
+    container_name:mobile-shopping-aggregator
     image: ${REGISTRY:-eshop}/mobileshoppingagg:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -120,6 +137,7 @@ services:
       - basket-api
 
   webshoppingagg:
+    container_name:web-shopping-aggregator
     image: ${REGISTRY:-eshop}/webshoppingagg:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -135,6 +153,7 @@ services:
       - basket-api
 
   ordering-signalrhub:
+    container_name:ordering-signalr-hub
     image: ${REGISTRY:-eshop}/ordering.signalrhub:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -150,12 +169,14 @@ services:
       - basket-api
 
   webstatus:
+    container_name:web-status
     image: ${REGISTRY:-eshop}/webstatus:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: Web/WebStatus/Dockerfile
 
   webspa:
+    container_name:web-spa
     image: ${REGISTRY:-eshop}/webspa:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -168,6 +189,7 @@ services:
 #      - webmarketingapigw
 
   webmvc:
+    container_name:web-mvc
     image: ${REGISTRY:-eshop}/webmvc:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -178,6 +200,7 @@ services:
       - webmarketingapigw
 
   webhooks-client:
+    container_name:webhooks-client
     image: ${REGISTRY:-eshop}/webhooks.client:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
@@ -186,7 +209,9 @@ services:
       - webhooks-api
 
   webshoppingapigw:
+    container_name:web-shopping-api-gateway
     image: envoyproxy/envoy:v1.11.1
 
   webmarketingapigw:
+    container_name:web-marketing-api-gateway
     image: envoyproxy/envoy:v1.11.1
